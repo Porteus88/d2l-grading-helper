@@ -306,10 +306,15 @@ GH.buildPanel = function () {
     Object.assign(insertBtn.style, { padding: '5px 14px', fontSize: '12px' });
     bottomBar.appendChild(bottomLeft); bottomBar.appendChild(insertBtn);
 
+    // ── Saved indicator ───────────────────────────────────────────────────────
+    const savedIndicator = document.createElement('div');
+    savedIndicator.className = 'gh-saved-indicator';
+    savedIndicator.textContent = '✓ Saved';
+
     // ── Version bar ───────────────────────────────────────────────────────────
     const versionBar = document.createElement('div');
     versionBar.className = 'gh-version-bar';
-    versionBar.textContent = 'D2L Grading Helper v4.6.0';
+    versionBar.textContent = 'D2L Grading Helper v4.7.0';
 
     // ── Assemble body ─────────────────────────────────────────────────────────
     body.appendChild(courseRow);
@@ -325,6 +330,7 @@ GH.buildPanel = function () {
     body.appendChild(csvRow);
     body.appendChild(hiddenFileInput);
     body.appendChild(bottomBar);
+    body.appendChild(savedIndicator);
     body.appendChild(versionBar);
 
     // ── Resizer ───────────────────────────────────────────────────────────────
@@ -352,6 +358,16 @@ GH.buildPanel = function () {
         darkModeBtn.textContent = darkMode ? '☀️' : '🌙';
         darkModeBtn.title       = darkMode ? 'Switch to light mode' : 'Switch to dark mode';
     }
+
+    // ── Auto-save flash indicator ─────────────────────────────────────────────
+    let savedTimer = null;
+    const _origSaveConfig = GH.saveConfig.bind(GH);
+    GH.saveConfig = function () {
+        _origSaveConfig();
+        savedIndicator.classList.add('gh-saved-visible');
+        clearTimeout(savedTimer);
+        savedTimer = setTimeout(() => savedIndicator.classList.remove('gh-saved-visible'), 1800);
+    };
 
     // ── Preview ───────────────────────────────────────────────────────────────
     function updatePreview() {

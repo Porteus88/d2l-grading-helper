@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "D2L Grading Helper",
-  "version": "4.6.0",
+  "version": "4.7.0",
   "description": "Course/assignment feedback checklist, level comments, next steps, CSV import/export, and auto-paste into D2L Overall Feedback.",
   "permissions": [
     "storage",
