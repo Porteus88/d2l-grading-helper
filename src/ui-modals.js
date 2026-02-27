@@ -77,17 +77,18 @@ GH._sectionHead = function (text) {
 };
 
 GH._makeBtn = function (label, lightBg, darkBg) {
+    const dark = GH._isDark();
     const b = document.createElement('button');
     b.textContent = label;
-    const bg = GH._isDark() ? (darkBg || lightBg) : lightBg;
-    // For grey cancel buttons, override text colour in dark mode
+    b.className = 'gh-modal-btn' + (dark ? ' gh-dark-btn' : '');
+    const bg = dark ? (darkBg || lightBg) : lightBg;
     const isGrey = lightBg === '#6c757d';
     Object.assign(b.style, {
         padding: '6px 14px', borderRadius: '4px',
-        border: isGrey && GH._isDark() ? '1px solid #3a4558' : 'none',
+        border: isGrey && dark ? '1px solid #3a4558' : 'none',
         cursor: 'pointer', fontSize: '13px',
-        backgroundColor: isGrey && GH._isDark() ? '#252d3a' : bg,
-        color: isGrey && GH._isDark() ? '#c8d4e6' : '#ffffff',
+        backgroundColor: isGrey && dark ? '#252d3a' : bg,
+        color: isGrey && dark ? '#c8d4e6' : '#ffffff',
         fontFamily: 'inherit'
     });
     b.addEventListener('mouseenter', () => { b.style.opacity = '0.85'; });
@@ -99,7 +100,7 @@ GH._makeInput = function (type, extraStyle) {
     const dark = GH._isDark();
     const el = document.createElement(type === 'textarea' ? 'textarea' : 'input');
     if (type !== 'textarea') el.type = type || 'text';
-    el.className = 'gh-modal-input';
+    el.className = 'gh-modal-input' + (dark ? ' gh-dark-input' : '');
     Object.assign(el.style, {
         backgroundColor: dark ? '#1a2233' : '#ffffff',
         color:           dark ? '#e6eaf2' : '#1a1f27',

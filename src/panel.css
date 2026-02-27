@@ -23,6 +23,7 @@
     --gh-input-border:  #b8c0cc;
     --gh-input-text:    #1a1f27;
     --gh-input-focus:   #0055cc;
+    --gh-focus-ring:    0 0 0 2px #ffffff, 0 0 0 4px #0055cc;
 
     --gh-preview-bg:    #eef4ff;
     --gh-preview-inner: #ffffff;
@@ -59,6 +60,7 @@
     --gh-input-border:  #3a4558;
     --gh-input-text:    #e6eaf2;
     --gh-input-focus:   #6aabff;
+    --gh-focus-ring:    0 0 0 2px #161b22, 0 0 0 4px #6aabff;
 
     --gh-preview-bg:    #1a2233;
     --gh-preview-inner: #161b22;
@@ -146,10 +148,10 @@
     font-family: inherit;
     transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
-#d2l-grading-helper-panel .gh-select:focus,
-#d2l-grading-helper-panel select:focus {
-    outline: 2px solid var(--gh-input-focus);
-    outline-offset: 1px;
+#d2l-grading-helper-panel .gh-select:focus-visible,
+#d2l-grading-helper-panel select:focus-visible {
+    outline: none;
+    box-shadow: var(--gh-focus-ring);
 }
 
 /* ── Textareas and text inputs ───────────────────────────────────────────── */
@@ -163,11 +165,11 @@
     font-family: inherit;
     transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
-#d2l-grading-helper-panel .gh-textarea:focus,
-#d2l-grading-helper-panel textarea:focus,
-#d2l-grading-helper-panel input[type="text"]:focus {
-    outline: 2px solid var(--gh-input-focus);
-    outline-offset: 1px;
+#d2l-grading-helper-panel .gh-textarea:focus-visible,
+#d2l-grading-helper-panel textarea:focus-visible,
+#d2l-grading-helper-panel input[type="text"]:focus-visible {
+    outline: none;
+    box-shadow: var(--gh-focus-ring);
 }
 #d2l-grading-helper-panel .gh-textarea::placeholder,
 #d2l-grading-helper-panel textarea::placeholder,
@@ -189,7 +191,52 @@
     opacity: 1;
 }
 
-/* ── Section blocks (level comment, next steps) ──────────────────────────── */
+/* ── Focus rings — keyboard navigation visibility ─────────────────────────── */
+/* Applied via :focus-visible so mouse clicks don't show the ring             */
+
+/* Toolbar buttons */
+#d2l-grading-helper-panel .gh-btn:focus-visible,
+#d2l-grading-helper-panel .gh-insert-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--gh-focus-ring);
+}
+
+/* Small icon buttons (edit/move/delete) */
+#d2l-grading-helper-panel .gh-icon-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--gh-focus-ring);
+    border-radius: 3px;
+}
+
+/* Header buttons (dark mode toggle, minimize) */
+#d2l-grading-helper-panel .gh-header button:focus-visible {
+    outline: 2px solid rgba(255,255,255,0.85);
+    outline-offset: 2px;
+}
+
+/* Checkboxes */
+#d2l-grading-helper-panel input[type="checkbox"]:focus-visible {
+    outline: none;
+    box-shadow: var(--gh-focus-ring);
+}
+
+/* Modal inputs (outside the panel element) */
+.gh-modal-input:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #0055cc;
+}
+.gh-modal-input.gh-dark-input:focus-visible {
+    box-shadow: 0 0 0 2px #161b22, 0 0 0 4px #6aabff;
+}
+
+/* Modal buttons (outside the panel element) */
+.gh-modal-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #0055cc;
+}
+.gh-modal-btn.gh-dark-btn:focus-visible {
+    box-shadow: 0 0 0 2px #161b22, 0 0 0 4px #6aabff;
+}
 #d2l-grading-helper-panel .gh-section {
     border: 1px solid var(--gh-border);
     border-radius: 4px;
