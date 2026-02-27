@@ -17,10 +17,12 @@ GH.defaultConfig = function () {
         panelState: {
             top: null,
             left: null,
-            width: 420,
-            height: 500,
+            width: 440,
+            height: 580,
             minimized: false,
-            darkMode: false
+            darkMode: false,
+            lcCollapsed: false,
+            nsCollapsed: false
         }
     };
 };
@@ -76,6 +78,8 @@ GH.initConfig = function (rawConfig, signature) {
         cfg = rawConfig;
         if (!cfg.courses) cfg.courses = [];
         if (!cfg.panelState) cfg.panelState = GH.defaultConfig().panelState;
+        if (typeof cfg.panelState.lcCollapsed !== 'boolean') cfg.panelState.lcCollapsed = false;
+        if (typeof cfg.panelState.nsCollapsed !== 'boolean') cfg.panelState.nsCollapsed = false;
         if (typeof cfg.includeLevelComment !== 'boolean') cfg.includeLevelComment = true;
         if (typeof cfg.includeNextSteps !== 'boolean') cfg.includeNextSteps = true;
         if (!cfg.selectedLevel) cfg.selectedLevel = 'PROFICIENT';
