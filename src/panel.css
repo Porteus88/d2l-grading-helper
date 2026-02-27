@@ -139,9 +139,10 @@
     outline-offset: 1px;
 }
 
-/* ── Textareas ───────────────────────────────────────────────────────────── */
+/* ── Textareas and text inputs ───────────────────────────────────────────── */
 #d2l-grading-helper-panel .gh-textarea,
-#d2l-grading-helper-panel textarea {
+#d2l-grading-helper-panel textarea,
+#d2l-grading-helper-panel input[type="text"] {
     background-color: var(--gh-input-bg);
     color: var(--gh-input-text);
     border: 1px solid var(--gh-input-border);
@@ -150,13 +151,28 @@
     transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
 #d2l-grading-helper-panel .gh-textarea:focus,
-#d2l-grading-helper-panel textarea:focus {
+#d2l-grading-helper-panel textarea:focus,
+#d2l-grading-helper-panel input[type="text"]:focus {
     outline: 2px solid var(--gh-input-focus);
     outline-offset: 1px;
 }
 #d2l-grading-helper-panel .gh-textarea::placeholder,
-#d2l-grading-helper-panel textarea::placeholder {
+#d2l-grading-helper-panel textarea::placeholder,
+#d2l-grading-helper-panel input[type="text"]::placeholder {
     color: var(--gh-text-faint);
+    opacity: 1;
+}
+
+/* ── Modal inputs live outside the panel element — use global class ───────── */
+.gh-modal-input {
+    font-family: Segoe UI, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    border-radius: 4px;
+    padding: 6px 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+.gh-modal-input::placeholder {
     opacity: 1;
 }
 

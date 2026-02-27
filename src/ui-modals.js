@@ -99,14 +99,23 @@ GH._makeInput = function (type, extraStyle) {
     const dark = GH._isDark();
     const el = document.createElement(type === 'textarea' ? 'textarea' : 'input');
     if (type !== 'textarea') el.type = type || 'text';
+    el.className = 'gh-modal-input';
     Object.assign(el.style, {
         backgroundColor: dark ? '#1a2233' : '#ffffff',
         color:           dark ? '#e6eaf2' : '#1a1f27',
         border:          dark ? '1px solid #3a4558' : '1px solid #b8c0cc',
-        borderRadius: '4px', padding: '6px 8px',
-        fontSize: '13px', fontFamily: 'inherit',
         ...(extraStyle || {})
     });
+    // Inject placeholder colour via a scoped style tag (modal inputs are outside the panel)
+    if (!document.getElementById('gh-modal-placeholder-style')) {
+        const st = document.createElement('style');
+        st.id = 'gh-modal-placeholder-style';
+        st.textContent = '.gh-modal-input::placeholder { opacity: 1; }';
+        document.head.appendChild(st);
+    }
+    // Set placeholder colour dynamically based on current theme
+    const placeholderStyle = document.getElementById('gh-modal-placeholder-style');
+    placeholderStyle.textContent = `.gh-modal-input::placeholder { color: ${dark ? '#8899ae' : '#8892a4'}; opacity: 1; }`;
     return el;
 };
 
