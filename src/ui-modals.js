@@ -122,11 +122,16 @@ GH._makeInput = function (type, extraStyle) {
 GH._makeListBox = function () {
     const dark = GH._isDark();
     const el = document.createElement('div');
+    el.className = 'gh-modal-listbox';
     Object.assign(el.style, {
         border:          dark ? '1px solid #2e3a4e' : '1px solid #dde2ea',
         borderRadius: '4px', padding: '4px',
         maxHeight: '260px', overflowY: 'auto', marginBottom: '8px',
-        backgroundColor: dark ? '#161b22' : '#f8f9fc'
+        backgroundColor: dark ? '#161b22' : '#f8f9fc',
+        // CSS variables for the scoped scrollbar rules
+        '--gh-modal-scroll-track': dark ? '#1a2233' : '#f0f2f5',
+        '--gh-modal-scroll-thumb': dark ? '#3a4558' : '#c0c8d8',
+        '--gh-modal-scroll-hover': dark ? '#4e607a' : '#a0abbe'
     });
     return el;
 };

@@ -1,4 +1,4 @@
-// ui-panel.js — v4.4.0: CSS-token dark mode, no inline colour painting
+// ui-panel.js — v4.5.0: CSS-token dark mode, no inline colour painting
 
 'use strict';
 
@@ -309,7 +309,7 @@ GH.buildPanel = function () {
     // ── Version bar ───────────────────────────────────────────────────────────
     const versionBar = document.createElement('div');
     versionBar.className = 'gh-version-bar';
-    versionBar.textContent = 'D2L Grading Helper v4.4.0';
+    versionBar.textContent = 'D2L Grading Helper v4.5.0';
 
     // ── Assemble body ─────────────────────────────────────────────────────────
     body.appendChild(courseRow);

@@ -96,9 +96,22 @@
 }
 
 /* ── Scrollbars (dark mode) ──────────────────────────────────────────────── */
-#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar      { width: 6px; }
-#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-track { background: #1a2233; }
-#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-thumb { background: #3a4558; border-radius: 3px; }
+/* ── Scrollbars — light mode ──────────────────────────────────────────────── */
+#d2l-grading-helper-panel ::-webkit-scrollbar       { width: 6px; height: 6px; }
+#d2l-grading-helper-panel ::-webkit-scrollbar-track  { background: #eef1f6; border-radius: 3px; }
+#d2l-grading-helper-panel ::-webkit-scrollbar-thumb  { background: #c0c8d8; border-radius: 3px; }
+#d2l-grading-helper-panel ::-webkit-scrollbar-thumb:hover { background: #a0abbe; }
+
+/* ── Scrollbars — dark mode ───────────────────────────────────────────────── */
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-track  { background: #1a2233; }
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-thumb  { background: #3a4558; }
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-thumb:hover { background: #4e607a; }
+
+/* ── Scrollbar colours for modal list boxes (outside panel element) ───────── */
+.gh-modal-listbox::-webkit-scrollbar       { width: 6px; }
+.gh-modal-listbox::-webkit-scrollbar-track { background: var(--gh-modal-scroll-track, #f0f2f5); border-radius: 3px; }
+.gh-modal-listbox::-webkit-scrollbar-thumb { background: var(--gh-modal-scroll-thumb, #c0c8d8); border-radius: 3px; }
+.gh-modal-listbox::-webkit-scrollbar-thumb:hover { background: var(--gh-modal-scroll-hover, #a0abbe); }
 
 /* ── Labels ──────────────────────────────────────────────────────────────── */
 #d2l-grading-helper-panel .gh-label {
