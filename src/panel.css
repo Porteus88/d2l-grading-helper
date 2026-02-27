@@ -1,19 +1,341 @@
-/* panel.css — D2L Grading Helper extension styles */
+/* panel.css — D2L Grading Helper v4.2.0 — CSS-token theming */
 
+/* ── Design tokens: Light mode ───────────────────────────────────────────── */
+#d2l-grading-helper-panel {
+    --gh-bg:            #ffffff;
+    --gh-bg-subtle:     #f5f7fa;
+    --gh-bg-inset:      #eef1f6;
+    --gh-border:        #d0d7e2;
+    --gh-border-subtle: #e4e8f0;
+
+    --gh-text:          #1a1f27;
+    --gh-text-muted:    #4a5568;
+    --gh-text-faint:    #8892a4;
+
+    --gh-accent:        #0055cc;
+    --gh-accent-text:   #ffffff;
+    --gh-success:       #1a7f37;
+    --gh-success-text:  #ffffff;
+    --gh-danger:        #b91c1c;
+    --gh-danger-text:   #ffffff;
+
+    --gh-input-bg:      #ffffff;
+    --gh-input-border:  #b8c0cc;
+    --gh-input-text:    #1a1f27;
+    --gh-input-focus:   #0055cc;
+
+    --gh-preview-bg:    #eef4ff;
+    --gh-preview-inner: #ffffff;
+    --gh-preview-border:#b8cef0;
+    --gh-preview-label: #0044aa;
+
+    --gh-header-grad:   linear-gradient(90deg, #0055cc, #003fa3);
+    --gh-shadow:        0 4px 16px rgba(0,0,0,0.18);
+
+    transition: background-color 0.15s, color 0.15s;
+}
+
+/* ── Design tokens: Dark mode ────────────────────────────────────────────── */
+#d2l-grading-helper-panel.gh-dark {
+    --gh-bg:            #161b22;
+    --gh-bg-subtle:     #1e2530;
+    --gh-bg-inset:      #252d3a;
+
+    --gh-border:        #2e3a4e;
+    --gh-border-subtle: #253040;
+
+    --gh-text:          #e6eaf2;
+    --gh-text-muted:    #b0bbcc;
+    --gh-text-faint:    #8899ae;
+
+    --gh-accent:        #6aabff;
+    --gh-accent-text:   #0a1628;
+    --gh-success:       #3fba6e;
+    --gh-success-text:  #061a0e;
+    --gh-danger:        #f87171;
+    --gh-danger-text:   #1a0000;
+
+    --gh-input-bg:      #1a2233;
+    --gh-input-border:  #3a4558;
+    --gh-input-text:    #e6eaf2;
+    --gh-input-focus:   #6aabff;
+
+    --gh-preview-bg:    #1a2233;
+    --gh-preview-inner: #161b22;
+    --gh-preview-border:#2e3a4e;
+    --gh-preview-label: #6aabff;
+
+    --gh-header-grad:   linear-gradient(90deg, #1c2e4a, #111e32);
+    --gh-shadow:        0 4px 20px rgba(0,0,0,0.5);
+}
+
+/* ── Base resets ─────────────────────────────────────────────────────────── */
 #d2l-grading-helper-panel * {
     box-sizing: border-box;
 }
 
-#d2l-grading-helper-panel select,
-#d2l-grading-helper-panel textarea,
-#d2l-grading-helper-panel input[type="text"] {
-    font-family: Segoe UI, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+#d2l-grading-helper-panel {
+    background-color: var(--gh-bg);
+    color: var(--gh-text);
+    box-shadow: var(--gh-shadow);
 }
 
-#d2l-grading-helper-panel button:hover {
-    opacity: 0.85;
+/* ── Header ──────────────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-header {
+    background: var(--gh-header-grad);
+    color: #ffffff;
+    border-radius: 8px 8px 0 0;
+    transition: background 0.15s;
 }
 
+/* ── Body ────────────────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-body {
+    background-color: var(--gh-bg);
+    color: var(--gh-text);
+    transition: background-color 0.15s, color 0.15s;
+}
+
+/* ── Scrollbars (dark mode) ──────────────────────────────────────────────── */
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar      { width: 6px; }
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-track { background: #1a2233; }
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-thumb { background: #3a4558; border-radius: 3px; }
+
+/* ── Labels ──────────────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-label {
+    font-weight: 600;
+    color: var(--gh-text-muted);
+    font-size: 12px;
+    transition: color 0.15s;
+}
+
+/* ── Toolbar buttons ─────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-btn {
+    border: 1px solid var(--gh-border);
+    background-color: var(--gh-bg-subtle);
+    color: var(--gh-text);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+#d2l-grading-helper-panel .gh-btn:hover {
+    background-color: var(--gh-bg-inset);
+    opacity: 1;
+}
+
+/* ── Select dropdowns ────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-select,
+#d2l-grading-helper-panel select {
+    background-color: var(--gh-input-bg);
+    color: var(--gh-input-text);
+    border: 1px solid var(--gh-input-border);
+    border-radius: 4px;
+    font-family: inherit;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+#d2l-grading-helper-panel .gh-select:focus,
+#d2l-grading-helper-panel select:focus {
+    outline: 2px solid var(--gh-input-focus);
+    outline-offset: 1px;
+}
+
+/* ── Textareas ───────────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-textarea,
+#d2l-grading-helper-panel textarea {
+    background-color: var(--gh-input-bg);
+    color: var(--gh-input-text);
+    border: 1px solid var(--gh-input-border);
+    border-radius: 4px;
+    font-family: inherit;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+#d2l-grading-helper-panel .gh-textarea:focus,
+#d2l-grading-helper-panel textarea:focus {
+    outline: 2px solid var(--gh-input-focus);
+    outline-offset: 1px;
+}
+#d2l-grading-helper-panel .gh-textarea::placeholder,
+#d2l-grading-helper-panel textarea::placeholder {
+    color: var(--gh-text-faint);
+    opacity: 1;
+}
+
+/* ── Section blocks (level comment, next steps) ──────────────────────────── */
+#d2l-grading-helper-panel .gh-section {
+    border: 1px solid var(--gh-border);
+    border-radius: 4px;
+    padding: 5px 6px;
+    background-color: var(--gh-bg-subtle);
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+/* ── Column header (Y / N / Comment) ────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-col-header {
+    display: grid;
+    grid-template-columns: 28px 28px 1fr;
+    column-gap: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gh-text-faint);
+    padding: 2px 4px;
+    transition: color 0.15s;
+}
+
+/* ── List containers ─────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-list {
+    border: 1px solid var(--gh-border);
+    border-radius: 4px;
+    padding: 4px;
+    overflow-y: auto;
+    background-color: var(--gh-bg-inset);
+    transition: background-color 0.15s, border-color 0.15s;
+}
+
+/* ── Feedback rows ───────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-feedback-row {
+    display: grid;
+    grid-template-columns: 26px 26px 1fr;
+    column-gap: 4px;
+    align-items: flex-start;
+    padding: 2px 2px;
+    border-radius: 3px;
+    transition: background-color 0.12s;
+}
+#d2l-grading-helper-panel .gh-nextstep-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 2px 2px;
+    border-radius: 3px;
+    transition: background-color 0.12s;
+}
+#d2l-grading-helper-panel .gh-row-hover {
+    background-color: var(--gh-bg-subtle);
+}
+
+/* ── Item text ───────────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-item-text {
+    flex: 1;
+    white-space: normal;
+    line-height: 1.35;
+    color: var(--gh-text);
+    font-size: 12px;
+    transition: color 0.15s;
+}
+
+/* ── Small icon buttons (edit/move/delete) ───────────────────────────────── */
+#d2l-grading-helper-panel .gh-icon-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0 4px;
+    color: var(--gh-text-faint);
+    border-radius: 3px;
+    transition: color 0.12s, background-color 0.12s;
+}
+#d2l-grading-helper-panel .gh-icon-btn:hover          { background-color: var(--gh-bg-inset); color: var(--gh-text); }
+#d2l-grading-helper-panel .gh-icon-btn.gh-icon-edit   { color: var(--gh-accent); }
+#d2l-grading-helper-panel .gh-icon-btn.gh-icon-delete { color: var(--gh-danger); }
+#d2l-grading-helper-panel .gh-icon-btn.gh-icon-move   { color: var(--gh-text-muted); }
+
+/* ── Checkboxes ──────────────────────────────────────────────────────────── */
 #d2l-grading-helper-panel input[type="checkbox"] {
     cursor: pointer;
+    accent-color: var(--gh-accent);
+}
+
+/* ── Preview block ───────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-preview-block {
+    background-color: var(--gh-preview-bg);
+    border: 1px solid var(--gh-preview-border);
+    border-radius: 4px;
+    padding: 5px 6px;
+    transition: background-color 0.15s, border-color 0.15s;
+}
+#d2l-grading-helper-panel .gh-preview-label {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--gh-preview-label);
+    transition: color 0.15s;
+}
+#d2l-grading-helper-panel .gh-preview-content {
+    background-color: var(--gh-preview-inner);
+    border: 1px solid var(--gh-border-subtle);
+    border-radius: 3px;
+    color: var(--gh-text);
+    font-family: Segoe UI, system-ui, sans-serif;
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+
+/* ── Empty / placeholder messages ────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-empty-msg {
+    font-style: italic;
+    color: var(--gh-text-faint);
+    font-size: 12px;
+    padding: 4px 2px;
+    transition: color 0.15s;
+}
+
+/* ── Insert button ───────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-insert-btn {
+    background-color: var(--gh-success);
+    color: var(--gh-success-text);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 700;
+    font-family: inherit;
+    transition: background-color 0.15s, color 0.15s;
+}
+#d2l-grading-helper-panel .gh-insert-btn:hover { opacity: 0.88; }
+
+/* ── Version bar ─────────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-version-bar {
+    font-size: 10px;
+    color: var(--gh-text-faint);
+    text-align: center;
+    padding: 3px 0 2px 0;
+    letter-spacing: 0.04em;
+    user-select: none;
+    transition: color 0.15s;
+}
+
+/* ── Resizer handle ──────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-resizer {
+    position: absolute;
+    width: 14px; height: 14px;
+    right: 1px; bottom: 1px;
+    cursor: se-resize;
+}
+#d2l-grading-helper-panel .gh-resizer-icon {
+    width: 100%; height: 100%;
+    border-right: 2px solid var(--gh-border);
+    border-bottom: 2px solid var(--gh-border);
+    box-sizing: border-box;
+    transition: border-color 0.15s;
+}
+
+/* ── Toast notification ──────────────────────────────────────────────────── */
+#gh-toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(12px);
+    background: #1a1f27;
+    color: #f0f4ff;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-family: Segoe UI, system-ui, sans-serif;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s, transform 0.22s;
+    z-index: 10000001;
+    white-space: nowrap;
+}
+#gh-toast.gh-toast-show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }
