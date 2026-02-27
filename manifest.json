@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "D2L Grading Helper",
+  "version": "4.0.0",
+  "description": "Course/assignment feedback checklist, level comments, next steps, CSV import/export, and auto-paste into D2L Overall Feedback.",
+  "permissions": [
+    "storage",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "*://sd63.onlinelearningbc.com/*",
+    "*://*.onlinelearningbc.com/*",
+    "*://*.desire2learn.com/*",
+    "*://*.d2l.com/*",
+    "*://*.brightspace.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://sd63.onlinelearningbc.com/d2l/le/activities/evaluation/*",
+        "*://sd63.onlinelearningbc.com/d2l/le/activities/iterator/*",
+        "*://*.onlinelearningbc.com/d2l/le/activities/evaluation/*",
+        "*://*.onlinelearningbc.com/d2l/le/activities/iterator/*",
+        "*://*.desire2learn.com/d2l/le/activities/evaluation/*",
+        "*://*.desire2learn.com/d2l/le/activities/iterator/*",
+        "*://*.d2l.com/d2l/le/activities/evaluation/*",
+        "*://*.d2l.com/d2l/le/activities/iterator/*",
+        "*://*.brightspace.com/d2l/le/activities/evaluation/*",
+        "*://*.brightspace.com/d2l/le/activities/iterator/*"
+      ],
+      "js": [
+        "src/utils.js",
+        "src/storage.js",
+        "src/config.js",
+        "src/csv.js",
+        "src/d2l.js",
+        "src/ui-modals.js",
+        "src/ui-panel.js",
+        "src/content.js"
+      ],
+      "css": ["src/panel.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "D2L Grading Helper"
+  }
+}

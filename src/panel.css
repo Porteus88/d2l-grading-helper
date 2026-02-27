@@ -1,0 +1,360 @@
+/* panel.css — D2L Grading Helper extension styles
+   Uses CSS custom properties (tokens) for light/dark theming.
+   WCAG AA contrast maintained throughout.                        */
+
+/* ── Light mode tokens (default) ─────────────────────────────── */
+#d2l-grading-helper-panel {
+    --gh-bg:            #ffffff;
+    --gh-bg-subtle:     #f4f6f9;
+    --gh-bg-inset:      #eef1f6;
+
+    --gh-border:        #c8d0db;
+    --gh-border-subtle: #dde2ea;
+
+    --gh-text:          #1a1f27;
+    --gh-text-muted:    #4a5568;
+    --gh-text-faint:    #6b7a90;
+
+    --gh-accent:        #0055cc;
+    --gh-accent-hover:  #003fa3;
+    --gh-accent-text:   #ffffff;
+
+    --gh-success:       #1a7f37;
+    --gh-success-hover: #145d28;
+    --gh-success-text:  #ffffff;
+
+    --gh-danger:        #b91c1c;
+
+    --gh-btn-bg:        #f0f2f5;
+    --gh-btn-border:    #b8c0cc;
+    --gh-btn-text:      #1a1f27;
+    --gh-btn-hover:     #e2e6ec;
+
+    --gh-input-bg:      #ffffff;
+    --gh-input-border:  #b8c0cc;
+    --gh-input-text:    #1a1f27;
+    --gh-input-focus:   #0055cc;
+
+    --gh-list-bg:       #f8f9fc;
+    --gh-list-border:   #dde2ea;
+
+    --gh-section-bg:    #f4f6f9;
+    --gh-section-border:#c8d0db;
+
+    --gh-preview-bg:    #eef4ff;
+    --gh-preview-border:#93b4e8;
+    --gh-preview-inner: #ffffff;
+    --gh-preview-label: #0044aa;
+
+    --gh-shadow:        0 4px 20px rgba(0,0,0,0.15);
+    --gh-header-grad:   linear-gradient(90deg, #0055cc, #003fa3);
+
+    background-color: var(--gh-bg);
+    color: var(--gh-text);
+    box-shadow: var(--gh-shadow);
+}
+
+/* ── Dark mode tokens ─────────────────────────────────────────── */
+#d2l-grading-helper-panel.gh-dark {
+    --gh-bg:            #161b22;
+    --gh-bg-subtle:     #1e2530;
+    --gh-bg-inset:      #252d3a;
+
+    --gh-border:        #3a4558;
+    --gh-border-subtle: #2e3a4e;
+
+    --gh-text:          #e6eaf2;
+    --gh-text-muted:    #b0bbcc;
+    --gh-text-faint:    #8899ae;
+
+    --gh-accent:        #6aabff;
+    --gh-accent-hover:  #88bfff;
+    --gh-accent-text:   #0a1628;
+
+    --gh-success:       #3fba6e;
+    --gh-success-hover: #52cc80;
+    --gh-success-text:  #061a0e;
+
+    --gh-danger:        #f87171;
+
+    --gh-btn-bg:        #252d3a;
+    --gh-btn-border:    #3a4558;
+    --gh-btn-text:      #c8d4e6;
+    --gh-btn-hover:     #2e3a4e;
+
+    --gh-input-bg:      #1a2233;
+    --gh-input-border:  #3a4558;
+    --gh-input-text:    #e6eaf2;
+    --gh-input-focus:   #6aabff;
+
+    --gh-list-bg:       #1a2233;
+    --gh-list-border:   #2e3a4e;
+
+    --gh-section-bg:    #1e2530;
+    --gh-section-border:#3a4558;
+
+    --gh-preview-bg:    #1a2640;
+    --gh-preview-border:#3a5580;
+    --gh-preview-inner: #0f1926;
+    --gh-preview-label: #6aabff;
+
+    --gh-shadow:        0 4px 20px rgba(0,0,0,0.55);
+    --gh-header-grad:   linear-gradient(90deg, #1c2e4a, #111e32);
+}
+
+
+/* ── Header gradient band ────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-header {
+    background: var(--gh-header-grad);
+    color: #ffffff;
+    transition: background 0.2s;
+}
+
+/* ── Scrollable body ─────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-body {
+    background-color: var(--gh-bg);
+    color: var(--gh-text);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* ── Selection count badge ───────────────────────────────────── */
+#d2l-grading-helper-panel .gh-badge {
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* ── Collapsible section toggles ─────────────────────────────── */
+#d2l-grading-helper-panel .gh-collapse-toggle {
+    color: var(--gh-text);
+    font-weight: 600;
+    font-size: 12px;
+    transition: color 0.2s;
+}
+#d2l-grading-helper-panel .gh-collapse-toggle:hover { opacity: 0.8; }
+#d2l-grading-helper-panel .gh-section-label {
+    font-weight: 400;
+    color: var(--gh-text-muted);
+    font-size: 11px;
+}
+/* ── Base resets ──────────────────────────────────────────────── */
+#d2l-grading-helper-panel * {
+    box-sizing: border-box;
+}
+
+#d2l-grading-helper-panel {
+    transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar {
+    width: 6px;
+    background: var(--gh-bg-inset);
+}
+#d2l-grading-helper-panel.gh-dark ::-webkit-scrollbar-thumb {
+    background: var(--gh-border);
+    border-radius: 3px;
+}
+
+#d2l-grading-helper-panel select,
+#d2l-grading-helper-panel textarea,
+#d2l-grading-helper-panel input[type="text"] {
+    background-color: var(--gh-input-bg);
+    color: var(--gh-input-text);
+    border: 1px solid var(--gh-input-border);
+    border-radius: 4px;
+    font-family: inherit;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+#d2l-grading-helper-panel select:focus,
+#d2l-grading-helper-panel textarea:focus {
+    outline: 2px solid var(--gh-input-focus);
+    outline-offset: 1px;
+    border-color: var(--gh-input-focus);
+}
+
+#d2l-grading-helper-panel .gh-btn {
+    background-color: var(--gh-btn-bg);
+    color: var(--gh-btn-text);
+    border: 1px solid var(--gh-btn-border);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+#d2l-grading-helper-panel .gh-btn:hover {
+    background-color: var(--gh-btn-hover);
+    border-color: var(--gh-border);
+}
+
+#d2l-grading-helper-panel .gh-icon-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0 3px;
+    font-size: 12px;
+    transition: opacity 0.15s;
+    color: var(--gh-text-muted);
+}
+#d2l-grading-helper-panel .gh-icon-btn:hover { opacity: 0.7; }
+#d2l-grading-helper-panel .gh-icon-btn.edit   { color: var(--gh-accent); }
+#d2l-grading-helper-panel .gh-icon-btn.delete { color: var(--gh-danger); }
+
+#d2l-grading-helper-panel .gh-insert-btn {
+    background-color: var(--gh-success);
+    color: var(--gh-success-text);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+    transition: background-color 0.15s;
+}
+#d2l-grading-helper-panel .gh-insert-btn:hover {
+    background-color: var(--gh-success-hover);
+}
+
+#d2l-grading-helper-panel .gh-section {
+    background-color: var(--gh-section-bg);
+    border: 1px solid var(--gh-section-border);
+    border-radius: 4px;
+    padding: 5px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+#d2l-grading-helper-panel .gh-list {
+    background-color: var(--gh-list-bg);
+    border: 1px solid var(--gh-list-border);
+    border-radius: 4px;
+    padding: 4px;
+    overflow-y: auto;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+#d2l-grading-helper-panel .gh-feedback-row {
+    display: grid;
+    grid-template-columns: 28px 28px 1fr;
+    column-gap: 4px;
+    align-items: flex-start;
+    padding: 3px 2px;
+    border-radius: 3px;
+    transition: background-color 0.1s;
+}
+#d2l-grading-helper-panel .gh-feedback-row:hover {
+    background-color: var(--gh-bg-inset);
+}
+
+#d2l-grading-helper-panel .gh-nextstep-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+    padding: 3px 2px;
+    border-radius: 3px;
+    transition: background-color 0.1s;
+}
+#d2l-grading-helper-panel .gh-nextstep-row:hover {
+    background-color: var(--gh-bg-inset);
+}
+
+#d2l-grading-helper-panel .gh-empty-msg {
+    font-style: italic;
+    color: var(--gh-text-faint);
+    padding: 4px 2px;
+}
+
+#d2l-grading-helper-panel input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: var(--gh-accent);
+    width: 14px;
+    height: 14px;
+}
+
+#d2l-grading-helper-panel .gh-preview-block {
+    background-color: var(--gh-preview-bg);
+    border: 1px solid var(--gh-preview-border);
+    border-radius: 4px;
+    padding: 5px;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+#d2l-grading-helper-panel .gh-preview-label {
+    color: var(--gh-preview-label);
+    font-weight: 600;
+    transition: color 0.2s;
+}
+#d2l-grading-helper-panel .gh-preview-content {
+    background-color: var(--gh-preview-inner);
+    border: 1px solid var(--gh-border-subtle);
+    border-radius: 4px;
+    padding: 6px;
+    min-height: 60px;
+    max-height: 130px;
+    overflow-y: auto;
+    font-size: 11px;
+    line-height: 1.6;
+    color: var(--gh-text);
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+#d2l-grading-helper-panel .gh-col-header {
+    display: grid;
+    grid-template-columns: 28px 28px 1fr;
+    column-gap: 4px;
+    font-size: 11px;
+    color: var(--gh-text-muted);
+    padding: 2px 4px;
+}
+
+#d2l-grading-helper-panel .gh-resizer {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    right: 1px;
+    bottom: 1px;
+    cursor: se-resize;
+}
+#d2l-grading-helper-panel .gh-resizer-icon {
+    width: 100%;
+    height: 100%;
+    border-right: 2px solid var(--gh-border);
+    border-bottom: 2px solid var(--gh-border);
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+#d2l-grading-helper-panel button:focus-visible,
+#d2l-grading-helper-panel select:focus-visible,
+#d2l-grading-helper-panel textarea:focus-visible,
+#d2l-grading-helper-panel input:focus-visible {
+    outline: 2px solid var(--gh-input-focus);
+    outline-offset: 2px;
+}
+
+/* ── Char counter warning ─────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-char-warn {
+    color: #c05000;
+    font-size: 10px;
+    text-align: right;
+}
+#d2l-grading-helper-panel.gh-dark .gh-char-warn {
+    color: #ffaa55;
+}
+
+/* ── Toast notification ───────────────────────────────────────── */
+#gh-toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(16px);
+    background: #1a1f27;
+    color: #e6eaf2;
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-family: Segoe UI, system-ui, sans-serif;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 10000001;
+}
+#gh-toast.gh-toast-show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
