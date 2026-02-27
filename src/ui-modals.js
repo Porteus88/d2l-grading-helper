@@ -150,6 +150,63 @@ GH._triggerDownload = function (content, mimeType, filename) {
     document.body.removeChild(link); URL.revokeObjectURL(url);
 };
 
+// ── Custom alert dialog (replaces browser alert()) ────────────────────────────
+GH._alert = function (message, onClose) {
+    const dark   = GH._isDark();
+    const modal  = GH._makeModalOverlay();
+    const dialog = GH._makeModalDialog('380px');
+
+    const msg = document.createElement('p');
+    msg.innerHTML = message.replace(/\n/g, '<br>');
+    Object.assign(msg.style, { margin: '0 0 18px 0', lineHeight: '1.55', color: dark ? '#e6eaf2' : '#1a1f27' });
+
+    const btnRow = document.createElement('div');
+    Object.assign(btnRow.style, { display: 'flex', justifyContent: 'flex-end' });
+    const okBtn = GH._makeBtn('OK', '#0055cc', '#6aabff');
+    if (dark) okBtn.style.color = '#0a1628';
+    okBtn.onclick = () => { document.body.removeChild(modal); if (onClose) onClose(); };
+
+    btnRow.appendChild(okBtn);
+    dialog.appendChild(msg); dialog.appendChild(btnRow);
+    modal.appendChild(dialog); document.body.appendChild(modal);
+    setTimeout(() => okBtn.focus(), 60);
+};
+
+// ── Custom prompt dialog (replaces browser prompt()) ─────────────────────────
+GH._prompt = function (message, defaultValue, onOk, onCancel) {
+    const dark   = GH._isDark();
+    const modal  = GH._makeModalOverlay();
+    const dialog = GH._makeModalDialog('400px');
+
+    const msg = document.createElement('label');
+    msg.innerHTML = message.replace(/\n/g, '<br>');
+    Object.assign(msg.style, { display: 'block', marginBottom: '10px', lineHeight: '1.5', color: dark ? '#e6eaf2' : '#1a1f27' });
+
+    const input = GH._makeInput('text', { width: '100%', boxSizing: 'border-box' });
+    input.value = defaultValue || '';
+    Object.assign(input.style, { marginBottom: '16px' });
+
+    const btnRow = document.createElement('div');
+    Object.assign(btnRow.style, { display: 'flex', justifyContent: 'flex-end', gap: '8px' });
+    const cancelBtn = GH._makeBtn('Cancel', '#6c757d');
+    const okBtn     = GH._makeBtn('OK',     '#0055cc', '#6aabff');
+    if (dark) okBtn.style.color = '#0a1628';
+
+    const doOk = () => {
+        const val = input.value;
+        document.body.removeChild(modal);
+        if (onOk) onOk(val);
+    };
+    cancelBtn.onclick = () => { document.body.removeChild(modal); if (onCancel) onCancel(); };
+    okBtn.onclick     = doOk;
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') doOk(); if (e.key === 'Escape') cancelBtn.onclick(); });
+
+    btnRow.appendChild(cancelBtn); btnRow.appendChild(okBtn);
+    dialog.appendChild(msg); dialog.appendChild(input); dialog.appendChild(btnRow);
+    modal.appendChild(dialog); document.body.appendChild(modal);
+    setTimeout(() => { input.focus(); input.select(); }, 60);
+};
+
 // ── Custom confirm dialog (replaces browser confirm() in dark mode) ───────────
 GH._confirm = function (message, onYes, onNo) {
     const dark  = GH._isDark();
@@ -290,7 +347,7 @@ GH.openListEditorModal = function (options) {
 
             if (allowEdit) {
                 const editBtn = mkIco('✎', '#0055cc', '#6aabff'); editBtn.title = 'Rename';
-                editBtn.addEventListener('click', () => { const u = window.prompt('Edit item:', working[idx]); if (u !== null && u.trim()) { working[idx] = u.trim(); renderList(); } });
+                editBtn.addEventListener('click', () => { GH._prompt('Edit item:', working[idx], u=>{ if(u.trim()){ working[idx]=u.trim(); renderList(); } }); });
                 grp.appendChild(editBtn);
             }
             if (allowDelete) {
@@ -319,7 +376,7 @@ GH.openListEditorModal = function (options) {
             backgroundColor:  dark ? '#252d3a'           : '#f5f5f5',
             color:            dark ? '#c8d4e6'           : '#1a1f27'
         });
-        addBtn.addEventListener('click', () => { const n = window.prompt('New item name:'); if (n && n.trim()) { working.push(n.trim()); renderList(); } });
+        addBtn.addEventListener('click', () => { GH._prompt('New item name:', '', n=>{ if(n.trim()){ working.push(n.trim()); renderList(); } }); });
         leftCtrl.appendChild(addBtn);
     }
 
