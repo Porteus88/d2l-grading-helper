@@ -282,6 +282,33 @@ GH.buildPanel = function () {
     const hiddenFileInput = document.createElement('input');
     hiddenFileInput.type = 'file'; hiddenFileInput.accept = '.csv,text/csv'; hiddenFileInput.style.display = 'none';
 
+    // ── Opacity row ───────────────────────────────────────────────────────────
+    let panelOpacity = Math.min(100, Math.max(50, ps.opacity !== undefined ? ps.opacity : 100));
+
+    const opacityRow = document.createElement('div');
+    opacityRow.className = 'gh-opacity-row';
+
+    const opacityIcon = document.createElement('span');
+    opacityIcon.textContent = '◑';
+    opacityIcon.title = 'Panel transparency when not hovered';
+
+    const opacitySlider = document.createElement('input');
+    opacitySlider.type  = 'range';
+    opacitySlider.min   = '50';
+    opacitySlider.max   = '100';
+    opacitySlider.step  = '5';
+    opacitySlider.value = panelOpacity;
+    opacitySlider.className = 'gh-opacity-slider';
+    opacitySlider.title = 'Panel background opacity when not hovered (50–100%)';
+
+    const opacityValue = document.createElement('span');
+    opacityValue.className = 'gh-opacity-value';
+    opacityValue.textContent = panelOpacity + '%';
+
+    opacityRow.appendChild(opacityIcon);
+    opacityRow.appendChild(opacitySlider);
+    opacityRow.appendChild(opacityValue);
+
     // ── Bottom bar ────────────────────────────────────────────────────────────
     const bottomBar = document.createElement('div');
     Object.assign(bottomBar.style, { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px', marginTop: '2px' });
@@ -314,7 +341,7 @@ GH.buildPanel = function () {
     // ── Version bar ───────────────────────────────────────────────────────────
     const versionBar = document.createElement('div');
     versionBar.className = 'gh-version-bar';
-    versionBar.textContent = 'D2L Grading Helper v4.7.0';
+    versionBar.textContent = 'D2L Grading Helper v4.8.0';
 
     // ── Assemble body ─────────────────────────────────────────────────────────
     body.appendChild(courseRow);
@@ -329,6 +356,7 @@ GH.buildPanel = function () {
     body.appendChild(previewBlock);
     body.appendChild(csvRow);
     body.appendChild(hiddenFileInput);
+    body.appendChild(opacityRow);
     body.appendChild(bottomBar);
     body.appendChild(savedIndicator);
     body.appendChild(versionBar);
@@ -358,6 +386,35 @@ GH.buildPanel = function () {
         darkModeBtn.textContent = darkMode ? '☀️' : '🌙';
         darkModeBtn.title       = darkMode ? 'Switch to light mode' : 'Switch to dark mode';
     }
+
+    // ── Background opacity via CSS custom property ────────────────────────────
+    // Sets --gh-bg-alpha on the panel element; all rgba() bg tokens pick it up.
+    // Text, borders, inputs are unaffected — they stay fully opaque.
+    function setAlpha(value) {
+        panel.style.setProperty('--gh-bg-alpha', (value / 100).toFixed(2));
+        panel.style.transition = 'background-color 0.25s ease';
+    }
+
+    // On hover/focus: immediately go fully opaque so content is readable
+    panel.addEventListener('mouseenter', () => setAlpha(100));
+    panel.addEventListener('mouseleave', () => setAlpha(panelOpacity));
+    panel.addEventListener('focusin',    () => setAlpha(100));
+    panel.addEventListener('focusout',   e => {
+        // Only fade if focus left the panel entirely (not moved to another child)
+        if (!panel.contains(e.relatedTarget)) setAlpha(panelOpacity);
+    });
+
+    // Slider: preview transparency while dragging, save on release
+    opacitySlider.addEventListener('input', () => {
+        panelOpacity = parseInt(opacitySlider.value, 10);
+        opacityValue.textContent = panelOpacity + '%';
+        setAlpha(panelOpacity);  // live preview while dragging
+    });
+    opacitySlider.addEventListener('change', () => {
+        panelOpacity = parseInt(opacitySlider.value, 10);
+        ps.opacity = panelOpacity;
+        GH.saveConfig();
+    });
 
     // ── Auto-save flash indicator ─────────────────────────────────────────────
     let savedTimer = null;
@@ -691,4 +748,5 @@ GH.buildPanel = function () {
     // ── Initial render ────────────────────────────────────────────────────────
     refreshAll();
     applyDarkMode();
+    setAlpha(panelOpacity);
 };

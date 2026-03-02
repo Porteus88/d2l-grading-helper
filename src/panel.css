@@ -1,10 +1,12 @@
-/* panel.css — D2L Grading Helper v4.2.0 — CSS-token theming */
+/* panel.css — D2L Grading Helper v4.8.0 — CSS-token theming */
 
 /* ── Design tokens: Light mode ───────────────────────────────────────────── */
 #d2l-grading-helper-panel {
-    --gh-bg:            #ffffff;
-    --gh-bg-subtle:     #f5f7fa;
-    --gh-bg-inset:      #eef1f6;
+    /* Background alpha — controlled by opacity slider (0.0–1.0).
+       1 = fully opaque (default). JS sets this via style on the panel element. */
+    --gh-bg-alpha:      1;
+
+    /* Solid colours used for text, borders, accents — never made transparent */
     --gh-border:        #d0d7e2;
     --gh-border-subtle: #e4e8f0;
 
@@ -19,29 +21,31 @@
     --gh-danger:        #b91c1c;
     --gh-danger-text:   #ffffff;
 
+    /* Input fields stay fully opaque — always readable */
     --gh-input-bg:      #ffffff;
     --gh-input-border:  #b8c0cc;
     --gh-input-text:    #1a1f27;
     --gh-input-focus:   #0055cc;
     --gh-focus-ring:    0 0 0 2px #ffffff, 0 0 0 4px #0055cc;
 
-    --gh-preview-bg:    #eef4ff;
-    --gh-preview-inner: #ffffff;
     --gh-preview-border:#b8cef0;
     --gh-preview-label: #0044aa;
 
     --gh-header-grad:   linear-gradient(90deg, #0055cc, #003fa3);
     --gh-shadow:        0 4px 16px rgba(0,0,0,0.18);
 
-    transition: background-color 0.15s, color 0.15s;
+    /* Alpha-aware backgrounds — these become transparent when --gh-bg-alpha < 1 */
+    --gh-bg:            rgba(255, 255, 255, var(--gh-bg-alpha));
+    --gh-bg-subtle:     rgba(245, 247, 250, var(--gh-bg-alpha));
+    --gh-bg-inset:      rgba(238, 241, 246, var(--gh-bg-alpha));
+    --gh-preview-bg:    rgba(238, 244, 255, var(--gh-bg-alpha));
+    --gh-preview-inner: rgba(255, 255, 255, var(--gh-bg-alpha));
+
+    transition: background-color 0.2s, color 0.15s;
 }
 
 /* ── Design tokens: Dark mode ────────────────────────────────────────────── */
 #d2l-grading-helper-panel.gh-dark {
-    --gh-bg:            #161b22;
-    --gh-bg-subtle:     #1e2530;
-    --gh-bg-inset:      #252d3a;
-
     --gh-border:        #2e3a4e;
     --gh-border-subtle: #253040;
 
@@ -62,13 +66,18 @@
     --gh-input-focus:   #6aabff;
     --gh-focus-ring:    0 0 0 2px #161b22, 0 0 0 4px #6aabff;
 
-    --gh-preview-bg:    #1a2233;
-    --gh-preview-inner: #161b22;
     --gh-preview-border:#2e3a4e;
     --gh-preview-label: #6aabff;
 
     --gh-header-grad:   linear-gradient(90deg, #1c2e4a, #111e32);
     --gh-shadow:        0 4px 20px rgba(0,0,0,0.5);
+
+    /* Alpha-aware dark backgrounds */
+    --gh-bg:            rgba(22,  27,  34,  var(--gh-bg-alpha));
+    --gh-bg-subtle:     rgba(30,  37,  48,  var(--gh-bg-alpha));
+    --gh-bg-inset:      rgba(37,  45,  58,  var(--gh-bg-alpha));
+    --gh-preview-bg:    rgba(26,  34,  51,  var(--gh-bg-alpha));
+    --gh-preview-inner: rgba(22,  27,  34,  var(--gh-bg-alpha));
 }
 
 /* ── Base resets ─────────────────────────────────────────────────────────── */
@@ -365,6 +374,65 @@
     transition: background-color 0.15s, color 0.15s;
 }
 #d2l-grading-helper-panel .gh-insert-btn:hover { opacity: 0.88; }
+
+/* ── Opacity row ─────────────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-opacity-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0 1px 0;
+}
+
+#d2l-grading-helper-panel .gh-opacity-row span {
+    font-size: 12px;
+    color: var(--gh-text-faint);
+    flex-shrink: 0;
+    transition: color 0.15s;
+    user-select: none;
+}
+
+#d2l-grading-helper-panel .gh-opacity-slider {
+    flex: 1;
+    height: 3px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: var(--gh-border);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+    border: none;
+    padding: 0;
+    transition: background 0.15s;
+}
+#d2l-grading-helper-panel .gh-opacity-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: var(--gh-accent);
+    cursor: pointer;
+    border: 2px solid var(--gh-bg);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+    transition: background 0.15s, transform 0.1s;
+}
+#d2l-grading-helper-panel .gh-opacity-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+#d2l-grading-helper-panel .gh-opacity-slider:focus-visible {
+    outline: none;
+    box-shadow: var(--gh-focus-ring);
+    border-radius: 2px;
+}
+
+#d2l-grading-helper-panel .gh-opacity-value {
+    font-size: 10px;
+    color: var(--gh-text-faint);
+    min-width: 30px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    transition: color 0.15s;
+    user-select: none;
+}
 
 /* ── Auto-save indicator ─────────────────────────────────────────────────── */
 #d2l-grading-helper-panel .gh-saved-indicator {
