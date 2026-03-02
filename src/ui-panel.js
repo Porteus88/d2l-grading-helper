@@ -197,6 +197,27 @@ GH.buildPanel = function () {
     [selectAllBtn, selectNeedsBtn, clearAllBtn].forEach(b => feedbackActions.appendChild(b));
     feedbackHeaderTop.appendChild(feedbackTitle); feedbackHeaderTop.appendChild(feedbackActions);
 
+    // ── Feedback search filter ────────────────────────────────────────────────
+    const feedbackFilterRow = document.createElement('div');
+    feedbackFilterRow.className = 'gh-filter-row';
+
+    const feedbackFilterInput = document.createElement('input');
+    feedbackFilterInput.type = 'text';
+    feedbackFilterInput.className = 'gh-textarea gh-filter-input';
+    feedbackFilterInput.placeholder = '🔍 Filter feedback…';
+    feedbackFilterInput.title = 'Type to filter feedback items by keyword';
+    Object.assign(feedbackFilterInput.style, { flex: '1', fontSize: '11px', padding: '2px 6px' });
+
+    const feedbackFilterClear = document.createElement('button');
+    feedbackFilterClear.className = 'gh-btn gh-filter-clear';
+    feedbackFilterClear.textContent = '✕';
+    feedbackFilterClear.title = 'Clear filter';
+    feedbackFilterClear.style.display = 'none';
+    Object.assign(feedbackFilterClear.style, { padding: '1px 5px', fontSize: '11px' });
+
+    feedbackFilterRow.appendChild(feedbackFilterInput);
+    feedbackFilterRow.appendChild(feedbackFilterClear);
+
     const feedbackColumnsHeader = document.createElement('div');
     feedbackColumnsHeader.className = 'gh-col-header';
     ['✓', '✗', 'Comment'].forEach((t, i) => {
@@ -328,8 +349,17 @@ GH.buildPanel = function () {
     skeletonLabel.appendChild(skeletonCheckbox);
     skeletonLabel.appendChild(Object.assign(document.createElement('span'), { textContent: '✉ Skeleton email' }));
 
+    const clearAfterLabel = document.createElement('label');
+    Object.assign(clearAfterLabel.style, { display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', fontSize: '11px' });
+    const clearAfterCheckbox = document.createElement('input');
+    clearAfterCheckbox.type = 'checkbox';
+    clearAfterCheckbox.checked = !!cfg.clearAfterInsert;
+    clearAfterCheckbox.title = 'Auto-clear all checkboxes after each insert (prevents carry-over between students)';
+    clearAfterLabel.appendChild(clearAfterCheckbox);
+    clearAfterLabel.appendChild(Object.assign(document.createElement('span'), { textContent: '↺ Clear on insert' }));
+
     const signatureBtn = makeBtn('✍ Sig', 'Configure teacher signature');
-    bottomLeft.appendChild(skeletonLabel); bottomLeft.appendChild(signatureBtn);
+    bottomLeft.appendChild(skeletonLabel); bottomLeft.appendChild(clearAfterLabel); bottomLeft.appendChild(signatureBtn);
 
     const insertBtn = document.createElement('button');
     insertBtn.className = 'gh-insert-btn';
@@ -346,7 +376,7 @@ GH.buildPanel = function () {
     // ── Version bar ───────────────────────────────────────────────────────────
     const versionBar = document.createElement('div');
     versionBar.className = 'gh-version-bar';
-    versionBar.textContent = 'D2L Grading Helper v4.9.0';
+    versionBar.textContent = 'D2L Grading Helper v4.10.0';
 
     // ── Assemble body ─────────────────────────────────────────────────────────
     body.appendChild(courseRow);
@@ -354,6 +384,7 @@ GH.buildPanel = function () {
     body.appendChild(levelRow);
     body.appendChild(levelFeedbackBlock);
     body.appendChild(feedbackHeaderTop);
+    body.appendChild(feedbackFilterRow);
     body.appendChild(feedbackColumnsHeader);
     body.appendChild(feedbackListContainer);
     body.appendChild(addFeedbackRow);
@@ -380,6 +411,7 @@ GH.buildPanel = function () {
     let selectedFeedbackProf  = new Set();
     let selectedFeedbackNeeds = new Set();
     let selectedNextSteps     = new Set();
+    let filterText            = '';  // current feedback search string
 
     function resetSelections() { selectedFeedbackProf.clear(); selectedFeedbackNeeds.clear(); selectedNextSteps.clear(); }
     function remapSetAfterRemoval(set, i) { const n=new Set(); set.forEach(x=>{if(x<i)n.add(x);else if(x>i)n.add(x-1);}); return n; }
@@ -508,8 +540,18 @@ GH.buildPanel = function () {
             const m = document.createElement('div'); m.className = 'gh-empty-msg'; m.textContent = 'No feedback comments yet. Add one below.';
             feedbackListContainer.appendChild(m); return;
         }
+        const needle = filterText.trim().toLowerCase();
+        let matchCount = 0;
         list.forEach((text, idx) => {
             const row = document.createElement('div'); row.className = 'gh-feedback-row';
+
+            // Filter: hide rows that don't match the current search string
+            if (needle && !text.toLowerCase().includes(needle)) {
+                row.style.display = 'none';
+            } else {
+                matchCount++;
+            }
+
             row.addEventListener('mouseenter', () => row.classList.add('gh-row-hover'));
             row.addEventListener('mouseleave', () => row.classList.remove('gh-row-hover'));
 
@@ -519,7 +561,19 @@ GH.buildPanel = function () {
             needsCb.addEventListener('change', () => { if (needsCb.checked) selectedFeedbackNeeds.add(idx); else selectedFeedbackNeeds.delete(idx); updatePreview(); });
 
             const cell = document.createElement('div'); Object.assign(cell.style, { display: 'flex', alignItems: 'flex-start', gap: '4px', paddingLeft: '6px' });
-            const lbl  = document.createElement('div'); lbl.textContent = text; lbl.className = 'gh-item-text';
+            const lbl  = document.createElement('div'); lbl.className = 'gh-item-text';
+
+            // Highlight matching keyword in the label text
+            if (needle && text.toLowerCase().includes(needle)) {
+                const lo = text.toLowerCase(), start = lo.indexOf(needle);
+                lbl.appendChild(document.createTextNode(text.slice(0, start)));
+                const mark = document.createElement('mark'); mark.className = 'gh-filter-match';
+                mark.textContent = text.slice(start, start + needle.length);
+                lbl.appendChild(mark);
+                lbl.appendChild(document.createTextNode(text.slice(start + needle.length)));
+            } else {
+                lbl.textContent = text;
+            }
 
             const grp = document.createElement('div'); Object.assign(grp.style, { display: 'flex', flexShrink: '0', gap: '1px' });
             const editBtn = makeSmallIconBtn('✎', 'edit',   'Edit');
@@ -537,6 +591,12 @@ GH.buildPanel = function () {
             row.appendChild(profCb); row.appendChild(needsCb); row.appendChild(cell);
             feedbackListContainer.appendChild(row);
         });
+        // Show "no matches" message when filter yields zero results
+        if (needle && matchCount === 0) {
+            const m = document.createElement('div'); m.className = 'gh-empty-msg';
+            m.textContent = `No items match "${filterText.trim()}"`;
+            feedbackListContainer.appendChild(m);
+        }
     }
 
     function refreshNextStepsList() {
@@ -697,6 +757,26 @@ GH.buildPanel = function () {
     selectNeedsBtn.addEventListener('click', () => { const c=GH.getCourseById(cfg.selectedCourseId); const a=GH.getAssignmentById(c,cfg.selectedAssignmentId); if(!c||!a)return; selectedFeedbackNeeds=new Set(); selectedFeedbackProf.clear(); GH.getFeedbackList(a).forEach((_,i)=>selectedFeedbackNeeds.add(i)); refreshFeedbackList(); updatePreview(); });
     clearAllBtn.addEventListener('click', () => { selectedFeedbackProf.clear(); selectedFeedbackNeeds.clear(); refreshFeedbackList(); updatePreview(); });
 
+    // ── Feedback filter wiring ────────────────────────────────────────────────
+    feedbackFilterInput.addEventListener('input', () => {
+        filterText = feedbackFilterInput.value;
+        feedbackFilterClear.style.display = filterText ? 'inline-block' : 'none';
+        refreshFeedbackList();
+    });
+    feedbackFilterClear.addEventListener('click', () => {
+        filterText = '';
+        feedbackFilterInput.value = '';
+        feedbackFilterClear.style.display = 'none';
+        feedbackFilterInput.focus();
+        refreshFeedbackList();
+    });
+
+    // ── Clear-after-insert preference ─────────────────────────────────────────
+    clearAfterCheckbox.addEventListener('change', () => {
+        cfg.clearAfterInsert = clearAfterCheckbox.checked;
+        GH.saveConfig();
+    });
+
     refreshPreviewBtn.addEventListener('click', () => updatePreview());
     downloadCsvBtn.addEventListener('click', () => GH.showCsvDownloadModal());
     uploadCsvBtn.addEventListener('click',   () => GH.showCsvUploadModal(hiddenFileInput));
@@ -721,6 +801,19 @@ GH.buildPanel = function () {
         const ok = GH.setOverallFeedbackHtml(html);
         if (!ok) return;
         GH.toast('✓ Feedback inserted!');
+
+        // Clear selections after insert if preference is on
+        if (cfg.clearAfterInsert) {
+            resetSelections();
+            // Also clear the search filter so all items are visible for next student
+            filterText = '';
+            feedbackFilterInput.value = '';
+            feedbackFilterClear.style.display = 'none';
+            refreshFeedbackList();
+            refreshNextStepsList();
+            updatePreview();
+        }
+
         if (!ps.minimized) {
             ps.minimized = true; ps.height = panel.offsetHeight;
             body.style.display = 'none'; resizer.style.display = 'none'; panel.style.height = 'auto';

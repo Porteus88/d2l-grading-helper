@@ -375,6 +375,43 @@
 }
 #d2l-grading-helper-panel .gh-insert-btn:hover { opacity: 0.88; }
 
+/* ── Feedback filter row ─────────────────────────────────────────────────── */
+#d2l-grading-helper-panel .gh-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 1px;
+}
+
+#d2l-grading-helper-panel .gh-filter-input {
+    min-height: unset !important;
+    resize: none !important;
+    height: 24px;
+    line-height: 1.3;
+}
+
+/* Keyword match highlight inside feedback items */
+#d2l-grading-helper-panel .gh-filter-match {
+    background-color: rgba(255, 213, 0, 0.45);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 1px;
+}
+#d2l-grading-helper-panel.gh-dark .gh-filter-match {
+    background-color: rgba(255, 200, 0, 0.28);
+}
+
+/* Compact overrides for filter row */
+#d2l-grading-helper-panel.gh-compact .gh-filter-input {
+    height: 20px;
+    font-size: 10px;
+    padding: 1px 5px;
+}
+#d2l-grading-helper-panel.gh-compact .gh-filter-clear {
+    font-size: 10px;
+    padding: 0 4px;
+}
+
 /* ══════════════════════════════════════════════════════════════════════════
    COMPACT MODE  —  all overrides scoped to .gh-compact
    Normal mode is completely unaffected.
