@@ -375,6 +375,127 @@
 }
 #d2l-grading-helper-panel .gh-insert-btn:hover { opacity: 0.88; }
 
+/* ══════════════════════════════════════════════════════════════════════════
+   COMPACT MODE  —  all overrides scoped to .gh-compact
+   Normal mode is completely unaffected.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Body: tighter padding and gap between rows */
+#d2l-grading-helper-panel.gh-compact .gh-body {
+    padding: 4px 5px;
+    gap: 3px;
+    font-size: 11px;
+}
+
+/* Header: reduce vertical padding */
+#d2l-grading-helper-panel.gh-compact .gh-header {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* Row labels */
+#d2l-grading-helper-panel.gh-compact .gh-label {
+    font-size: 11px;
+    min-width: 68px;
+}
+
+/* Toolbar buttons */
+#d2l-grading-helper-panel.gh-compact .gh-btn {
+    padding: 1px 4px;
+    font-size: 10px;
+}
+
+/* Select dropdowns */
+#d2l-grading-helper-panel.gh-compact select,
+#d2l-grading-helper-panel.gh-compact .gh-select {
+    padding: 1px 3px;
+    font-size: 11px;
+}
+
+/* Section blocks (level comment, next steps) */
+#d2l-grading-helper-panel.gh-compact .gh-section {
+    padding: 3px 4px;
+    gap: 2px;
+}
+
+/* Textareas: less minimum height */
+#d2l-grading-helper-panel.gh-compact .gh-textarea,
+#d2l-grading-helper-panel.gh-compact textarea {
+    padding: 3px 5px;
+    font-size: 11px;
+    min-height: 34px;
+}
+
+/* Feedback and next-steps list containers: show more items */
+#d2l-grading-helper-panel.gh-compact .gh-list {
+    padding: 2px 3px;
+    max-height: 200px;   /* was 160px — more items visible in compact mode */
+    min-height: 60px;
+}
+
+/* Feedback rows: tighter vertical rhythm */
+#d2l-grading-helper-panel.gh-compact .gh-feedback-row {
+    padding: 1px 2px;
+    grid-template-columns: 22px 22px 1fr;
+    column-gap: 3px;
+}
+#d2l-grading-helper-panel.gh-compact .gh-nextstep-row {
+    padding: 1px 2px;
+    gap: 3px;
+}
+
+/* Item text: tighter line height */
+#d2l-grading-helper-panel.gh-compact .gh-item-text {
+    font-size: 11px;
+    line-height: 1.25;
+}
+
+/* Column header (Y / N / Comment) */
+#d2l-grading-helper-panel.gh-compact .gh-col-header {
+    font-size: 10px;
+    padding: 1px 3px;
+    grid-template-columns: 22px 22px 1fr;
+    column-gap: 3px;
+}
+
+/* Icon buttons */
+#d2l-grading-helper-panel.gh-compact .gh-icon-btn {
+    font-size: 11px;
+    padding: 0 3px;
+}
+
+/* Preview block */
+#d2l-grading-helper-panel.gh-compact .gh-preview-block {
+    padding: 3px 4px;
+    gap: 2px;
+}
+#d2l-grading-helper-panel.gh-compact .gh-preview-content {
+    padding: 4px;
+    font-size: 10px;
+    max-height: 90px;
+}
+#d2l-grading-helper-panel.gh-compact .gh-preview-label {
+    font-size: 11px;
+}
+
+/* Opacity row */
+#d2l-grading-helper-panel.gh-compact .gh-opacity-row {
+    padding: 0;
+}
+
+/* Bottom bar insert button */
+#d2l-grading-helper-panel.gh-compact .gh-insert-btn {
+    padding: 3px 10px;
+    font-size: 11px;
+}
+
+/* Version and saved bars */
+#d2l-grading-helper-panel.gh-compact .gh-version-bar,
+#d2l-grading-helper-panel.gh-compact .gh-saved-indicator {
+    font-size: 9px;
+    padding: 1px 0;
+}
+
 /* ── Opacity row ─────────────────────────────────────────────────────────── */
 #d2l-grading-helper-panel .gh-opacity-row {
     display: flex;

@@ -26,12 +26,14 @@ GH.buildPanel = function () {
         ps.left   = Math.max(20, window.innerWidth - ps.width - 40);
     }
 
-    let darkMode = ps.darkMode || false;
+    let darkMode    = ps.darkMode || false;
+    let compactMode = ps.compact  || false;
 
     // ── Panel shell ───────────────────────────────────────────────────────────
     const panel = document.createElement('div');
     panel.id = 'd2l-grading-helper-panel';
-    if (darkMode) panel.classList.add('gh-dark');
+    if (darkMode)    panel.classList.add('gh-dark');
+    if (compactMode) panel.classList.add('gh-compact');
     Object.assign(panel.style, {
         position: 'fixed', zIndex: '9999999', borderRadius: '8px',
         fontFamily: 'Segoe UI, system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
@@ -58,21 +60,24 @@ GH.buildPanel = function () {
     const headerBtns = document.createElement('div');
     Object.assign(headerBtns.style, { display: 'flex', gap: '6px', alignItems: 'center' });
 
-    const darkModeBtn  = document.createElement('button');
-    const minimizeBtn  = document.createElement('button');
-    [darkModeBtn, minimizeBtn].forEach(b => {
+    const darkModeBtn = document.createElement('button');
+    const compactBtn  = document.createElement('button');
+    const minimizeBtn = document.createElement('button');
+    [darkModeBtn, compactBtn, minimizeBtn].forEach(b => {
         Object.assign(b.style, {
             border: 'none', borderRadius: '4px', padding: '2px 7px',
             fontSize: '13px', cursor: 'pointer',
             backgroundColor: 'rgba(255,255,255,0.18)', color: '#fff', lineHeight: '1.4'
         });
     });
-    darkModeBtn.textContent = darkMode ? '☀️' : '🌙';
-    darkModeBtn.title       = darkMode ? 'Switch to light mode' : 'Switch to dark mode';
+    darkModeBtn.textContent = darkMode    ? '☀️' : '🌙';
+    darkModeBtn.title       = darkMode    ? 'Switch to light mode' : 'Switch to dark mode';
+    compactBtn.textContent  = compactMode ? '⊞'  : '⊟';
+    compactBtn.title        = compactMode ? 'Switch to normal layout' : 'Switch to compact layout';
     minimizeBtn.textContent = ps.minimized ? '▢' : '▁';
     minimizeBtn.title       = ps.minimized ? 'Restore panel' : 'Minimize panel';
 
-    headerBtns.appendChild(darkModeBtn); headerBtns.appendChild(minimizeBtn);
+    headerBtns.appendChild(darkModeBtn); headerBtns.appendChild(compactBtn); headerBtns.appendChild(minimizeBtn);
     header.appendChild(titleSpan); header.appendChild(headerBtns);
 
     // ── Body ──────────────────────────────────────────────────────────────────
@@ -341,7 +346,7 @@ GH.buildPanel = function () {
     // ── Version bar ───────────────────────────────────────────────────────────
     const versionBar = document.createElement('div');
     versionBar.className = 'gh-version-bar';
-    versionBar.textContent = 'D2L Grading Helper v4.8.0';
+    versionBar.textContent = 'D2L Grading Helper v4.9.0';
 
     // ── Assemble body ─────────────────────────────────────────────────────────
     body.appendChild(courseRow);
@@ -385,6 +390,13 @@ GH.buildPanel = function () {
         panel.classList.toggle('gh-dark', darkMode);
         darkModeBtn.textContent = darkMode ? '☀️' : '🌙';
         darkModeBtn.title       = darkMode ? 'Switch to light mode' : 'Switch to dark mode';
+    }
+
+    // ── Compact mode — single class toggle, CSS overrides do the rest ─────────
+    function applyCompact() {
+        panel.classList.toggle('gh-compact', compactMode);
+        compactBtn.textContent = compactMode ? '⊞' : '⊟';
+        compactBtn.title       = compactMode ? 'Switch to normal layout' : 'Switch to compact layout';
     }
 
     // ── Background opacity via CSS custom property ────────────────────────────
@@ -646,6 +658,7 @@ GH.buildPanel = function () {
     });
 
     darkModeBtn.addEventListener('click', () => { darkMode = !darkMode; ps.darkMode = darkMode; GH.saveConfig(); applyDarkMode(); });
+    compactBtn.addEventListener('click',  () => { compactMode = !compactMode; ps.compact = compactMode; GH.saveConfig(); applyCompact(); });
 
     courseSelect.addEventListener('change', () => { cfg.selectedCourseId=courseSelect.value||null; cfg.selectedAssignmentId=null; resetSelections(); GH.saveConfig(); refreshAssignmentOptions(); refreshLevelOptions(); refreshLevelCommentUI(); refreshFeedbackList(); refreshNextStepsList(); updatePreview(); });
     assignmentSelect.addEventListener('change', () => { const c=GH.getCourseById(cfg.selectedCourseId); cfg.selectedAssignmentId=(c&&assignmentSelect.value)?assignmentSelect.value:null; resetSelections(); GH.saveConfig(); refreshLevelCommentUI(); refreshFeedbackList(); refreshNextStepsList(); updatePreview(); });
@@ -748,5 +761,6 @@ GH.buildPanel = function () {
     // ── Initial render ────────────────────────────────────────────────────────
     refreshAll();
     applyDarkMode();
+    applyCompact();
     setAlpha(panelOpacity);
 };
